@@ -1,0 +1,6 @@
+- name: bastion host config
+  hosts: default
+  become: true
+
+  roles:
+    - role: 'roles/bastion'

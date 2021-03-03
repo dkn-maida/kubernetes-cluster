@@ -13,7 +13,7 @@ locals { timestamp = regex_replace(timestamp(), "[- TZ:]", "") }
 # build blocks to create resources. A build block runs provisioners and
 # post-processors on an instance created by the source.
 source "amazon-ebs" "bastion" {
-  ami_name      = "bastion-ami-${local.timestamp}"
+  ami_name      = "bastion-ami"
   vpc_id= "vpc-0675522f0878c1fd5"
   subnet_id= "subnet-05dd53cb4874df2d8"
   instance_type = "t2.micro"
@@ -28,9 +28,15 @@ source "amazon-ebs" "bastion" {
     owners = ["amazon"]
   }
   ssh_username = "ec2-user"
+  force_deregister=true
+  force_delete_snapshot=true 
 }
 
 # a build block invokes sources and runs provisioning steps on them.
 build {
   sources = ["source.amazon-ebs.bastion"]
+  provisioner "ansible" {
+    playbook_file   = "./playbook.yml"
+    user="ec2-user"
+  }
 }
