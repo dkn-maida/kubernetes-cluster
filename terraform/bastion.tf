@@ -10,10 +10,10 @@ resource "aws_security_group" "bastion_sg" {
 
   ingress {
     description = "SSH from anywhere"
-    from_port   = 48000
-    to_port     = 48000
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [aws_vpc.kubernetes-cluster-vpc.cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -32,7 +32,7 @@ resource "aws_security_group" "bastion_sg" {
 resource "aws_instance" "bastion" {
   ami= data.aws_ami.bastion_ami.id
   instance_type = "t2.micro"
-  private_ip = "10.0.1.1"
+  private_ip = "10.0.1.4"
   subnet_id = aws_subnet.public.id
   security_groups=[aws_security_group.bastion_sg.id]
   key_name="bastion_key"
@@ -40,8 +40,6 @@ resource "aws_instance" "bastion" {
       volume_type = "gp2"
       volume_size = 8
   }
-
-  user_data = file("userdata.sh")
 
   tags = {
     Name = "bastion"

@@ -2,36 +2,16 @@
   hostname:
     name: bastion
 
-- name: Install the latest version of iptables
+- name: upgrade all packages
   yum:
-    update_cache: yes
-    name: iptables-services
+    name: "*"
     state: latest
 
-- name: Copy a new "ssh_config" file into place
-  template:
-    src: ssh_config.j2
-    dest: /etc/ssh/ssh_config
-    owner: root
-    group: root
-    mode: '0644'
-    backup: yes
-
-
-# - name: Block traffic on all ports by default
-#   iptables:
-#     chain: INPUT
-#     policy: DROP
-
-# - name: Allow new incoming packets on SSH port only
-#   iptables:
-#     chain: INPUT
-#     protocol: tcp
-#     destination_port: "{{ ssh_port }}"
-#     jump: ACCEPT
-#     comment: Accept new SSH connections.
-
-# - name: Restart service sshd
-#   service:
-#     name: httpd
-#     state: restarted
+# - name: Copy a new "ssh_config" file into place
+#   template:
+#     src: ssh_config.j2
+#     dest: /etc/ssh/sshd_config
+#     owner: root
+#     group: root
+#     mode: '0644'
+#     backup: yes

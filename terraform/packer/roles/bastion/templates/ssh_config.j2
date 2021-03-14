@@ -15,32 +15,29 @@
 # list of available options, their meanings and defaults, please see the
 # ssh_config(5) man page.
 
-Include /etc/ssh/ssh_config.d/*.conf
-
 Host *
-    ForwardAgent no
-    ForwardX11 no
-    ForwardX11Trusted no
-    PasswordAuthentication no
-    Port {{ ssh_port }}
-    HashKnownHosts yes
-    GSSAPIAuthentication yes
-    PermitRootLogin no
+#     ForwardAgent no
+#     ForwardX11 no
+#     ForwardX11Trusted no
+#     PasswordAuthentication no
+#     Port {{ ssh_port }}
+#     HashKnownHosts yes
+#     GSSAPIAuthentication yes
+#     PermitRootLogin no
 
-    # Supported HostKey algorithms by order of preference.
-    HostKey /etc/ssh/ssh_host_ed25519_key
-    HostKey /etc/ssh/ssh_host_ecdsa_key
-    HostKey /etc/ssh/ssh_host_rsa_key
+#     # Supported HostKey algorithms by order of preference.
+#     HostKey /etc/ssh/ssh_host_ed25519_key
+#     HostKey /etc/ssh/ssh_host_ecdsa_key
+#     HostKey /etc/ssh/ssh_host_rsa_key
 
-    AuthenticationMethods publickey
-    LogLevel VERBOSE
+#     AuthenticationMethods publickey
+#     LogLevel VERBOSE
 
-    PermitOpen *:22
-    PermitRootLogin no
+#     PermitOpen *:22
 
-    PermitTunnel no
-    GatewayPorts no
+#     PermitTunnel no
+#     GatewayPorts no
 
 
-Match User from="!ec2-user,*"
-	ForceCommand /usr/sbin/nologin
+# Match User from="!ec2-user"
+# 	ForceCommand /usr/sbin/nologin
