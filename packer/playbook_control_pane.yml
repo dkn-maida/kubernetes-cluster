@@ -1,0 +1,6 @@
+- name: controle pane host config
+  hosts: default
+  become: true
+
+  roles:
+    - role: 'roles/control-pane'
