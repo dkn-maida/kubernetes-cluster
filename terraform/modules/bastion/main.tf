@@ -7,7 +7,7 @@ data "aws_ami" "bastion_ami" {
 resource "aws_security_group" "bastion_sg" {
   name        = "bastion_sg"
   description = "Allow ssh on custom bastion port"
-  vpc_id      = aws_vpc.kubernetes-cluster-vpc.id
+  vpc_id      = var.vpc_id
 
   ingress {
     description = "SSH from anywhere"
@@ -33,8 +33,8 @@ resource "aws_security_group" "bastion_sg" {
 resource "aws_instance" "bastion" {
   ami= data.aws_ami.bastion_ami.id
   instance_type = "t2.micro"
-  private_ip = "10.0.1.4"
-  subnet_id = aws_subnet.public.id
+  private_ip = var.bastion_ip
+  subnet_id = var.public_subnet_id
   security_groups=[aws_security_group.bastion_sg.id]
   key_name="bastion_key"
   root_block_device  {

@@ -52,3 +52,11 @@ module "network" {
   private_subnet_cidr_block="10.0.2.0/24"
   public_subnet_cidr_block="10.0.1.0/24"
 }
+
+#bastion
+module "bastion" {
+  source = "./modules/bastion"
+  bastion_ip = "10.0.2.4"
+  vpc_id=module.network.vpc_id
+  public_subnet_id=module.network.public_subnet_id
+}

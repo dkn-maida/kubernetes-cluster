@@ -3,31 +3,32 @@
     name: "*"
     state: latest
 
-- name: install yum utils
+- name: Install pre-requisite packages
   yum:
-    name: "yum-utils"
-    state: latest
+   name: 
+     - yum-utils
+     - device-mapper-persistent-data
+     - lvm2
+   state: latest
 
-- name: add docker repo
-  get_url:
-    url: https://download.docker.com/linux/centos/docker-ce.repo
-    dest: /etc/yum.repos.d/docker-ce.repo
 
 - name: Install docker
   yum:
-    name: "docker"
-    state: latest
+   name: docker
+   state: latest
 
+- name: start and enable docker
+  service:
+    name: docker
+    state: started
+    enabled: true
+  
 - name: add kubernetes repo
   yum_repository:
     name: Kubernetes
     description: kubernetes repo
     baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
     gpgcheck: no
-
-- name: Put SELinux in permissive mode, logging actions that would be blocked.
-  ansible.posix.selinux:
-    state: disabled
 
 - name: install kubeadm, kubelet and kubectl
   yum:
@@ -38,7 +39,7 @@
     state: latest
 
 - name: Activate br_netfilter module
-  community.general.modprobe:
+  modprobe:
     name: br_netfilter
     state: present
 
@@ -53,7 +54,15 @@
     reload: yes
 
 - name: Start service kubelet
-  ansible.builtin.service:
-    name: httpd
+  service:
+    name: kubelet
     state: started
     enabled: yes
+
+
+- name: Iptables config
+  shell: |
+    echo br_netfilter >> /etc/modules-load.d/k8s.conf
+    echo net.bridge.bridge-nf-call-ip6tables = 1 >> /etc/modules-load.d/k8s.conf
+    echo net.bridge.bridge-nf-call-iptables = 1 >> /etc/modules-load.d/k8s.conf
+    sudo sysctl --system
