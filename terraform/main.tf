@@ -60,3 +60,14 @@ module "bastion" {
   vpc_id=module.network.vpc_id
   public_subnet_id=module.network.public_subnet_id
 }
+
+#bastion
+module "cluster" {
+  source = "./modules/cluster"
+  control_pane_1_ip = "10.0.1.4"
+  vpc_id=module.network.vpc_id
+  public_subnet_id=module.network.public_subnet_id
+  private_subnet_id=module.network.private_subnet_id
+  public_subnet_cidr_block=module.network.public_subnet_cidr_block
+  private_subnet_cidr_block=module.network.public_subnet_cidr_block
+}
