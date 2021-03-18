@@ -18,8 +18,11 @@ variable "private_subnet_id" {
     description = "private subnet id"
     type = string
 }
-
 variable "public_subnet_id" {
     description = "public subnet id"
+    type = string
+}
+variable "bastion_ip" {
+    description = "bastion ip"
     type = string
 }

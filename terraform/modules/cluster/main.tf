@@ -30,7 +30,7 @@ resource "aws_security_group" "control_pane_sg" {
         from_port   = 22
         to_port     = 22
         protocol    = "tcp"
-        cidr_blocks = [aws_instance.bastion.private_ip/32]
+        cidr_blocks = ["${var.bastion_ip}/32"]
     }
 
     ingress {

@@ -61,7 +61,7 @@ module "bastion" {
   public_subnet_id=module.network.public_subnet_id
 }
 
-#bastion
+#cluster
 module "cluster" {
   source = "./modules/cluster"
   control_pane_1_ip = "10.0.1.4"
@@ -70,4 +70,5 @@ module "cluster" {
   private_subnet_id=module.network.private_subnet_id
   public_subnet_cidr_block=module.network.public_subnet_cidr_block
   private_subnet_cidr_block=module.network.public_subnet_cidr_block
+  bastion_ip=module.bastion.bastion_ip
 }
