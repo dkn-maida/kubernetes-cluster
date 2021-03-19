@@ -65,6 +65,7 @@ module "bastion" {
 module "cluster" {
   source = "./modules/cluster"
   control_pane_1_ip = "10.0.1.4"
+  control_pane_2_ip="10.0.1.5"
   vpc_id=module.network.vpc_id
   public_subnet_id=module.network.public_subnet_id
   private_subnet_id=module.network.private_subnet_id

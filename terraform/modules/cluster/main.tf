@@ -20,6 +20,72 @@ resource "aws_instance" "control_pane_1" {
   }
 }
 
+resource "aws_instance" "control_pane_2" {
+  ami= data.aws_ami.control_pane_ami.id
+  instance_type = "t3.small"
+  private_ip = var.control_pane_2_ip
+  subnet_id = var.private_subnet_id
+  security_groups=[aws_security_group.control_pane_sg.id]
+  key_name="bastion_key"
+  root_block_device  {
+      volume_type = "gp2"
+      volume_size = 8
+  }
+  tags = {
+    Name = "master-2"   
+  }
+}
+
+resource "aws_instance" "worker_1" {
+  ami= data.aws_ami.control_pane_ami.id
+  instance_type = "t3.small"
+  private_ip = var.worker_1_ip
+  subnet_id = var.private_subnet_id
+  security_groups=[aws_security_group.worker_node_sg.id]
+  key_name="bastion_key"
+  root_block_device  {
+      volume_type = "gp2"
+      volume_size = 8
+  }
+  tags = {
+    Name = "master-1"   
+  }
+}
+
+
+resource "aws_instance" "worker_2" {
+  ami= data.aws_ami.control_pane_ami.id
+  instance_type = "t3.small"
+  private_ip = var.worker_2_ip
+  subnet_id = var.private_subnet_id
+  security_groups=[aws_security_group.worker_node_sg.id]
+  key_name="bastion_key"
+  root_block_device  {
+      volume_type = "gp2"
+      volume_size = 8
+  }
+  tags = {
+    Name = "master-1"   
+  }
+}
+
+resource "aws_instance" "worker_3" {
+  ami= data.aws_ami.control_pane_ami.id
+  instance_type = "t3.small"
+  private_ip = var.worker_3_ip
+  subnet_id = var.private_subnet_id
+  security_groups=[aws_security_group.worker_node_sg.id]
+  key_name="bastion_key"
+  root_block_device  {
+      volume_type = "gp2"
+      volume_size = 8
+  }
+  tags = {
+    Name = "master-1"   
+  }
+}
+
+
 resource "aws_security_group" "control_pane_sg" {
     name        = "control_pane_sg"
     description = "Allow ssh on host from bastion"
@@ -65,6 +131,39 @@ resource "aws_security_group" "control_pane_sg" {
     }
 
     tags = {
-        Name = "bastion_sg"
+        Name = "control_pane_sg"
+    }   
+}
+
+
+resource "aws_security_group" "worker_node_sg" {
+    name        = "worker_node_sg"
+    description = "Allow ssh on host from bastion"
+    vpc_id      = var.vpc_id
+
+    ingress {
+        description = "SSH from bastion only"
+        from_port   = 22
+        to_port     = 22
+        protocol    = "tcp"
+        cidr_blocks = ["${var.bastion_ip}/32"]
+    }
+    ingress {
+        description = "kubelet API Self, Control Pane"
+        from_port   = 10250
+        to_port     = 10250
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress {
+        description = "NodePortServices"
+        from_port   = 30000
+        to_port     = 32767
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    tags = {
+        Name = "worker_sg"
     }   
 }

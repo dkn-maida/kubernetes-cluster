@@ -2,6 +2,22 @@ variable "control_pane_1_ip" {
     description = "control pane 1 ip"
     type = string
 }
+variable "control_pane_2_ip" {
+    description = "control pane 2 ip"
+    type = string
+}
+variable "worker_1_ip" {
+    description = "worker 1 ip"
+    type = string
+}
+variable "worker_2_ip" {
+    description = "worker 2 ip"
+    type = string
+}
+variable "worker_3_ip" {
+    description = "worker 3 ip"
+    type = string
+}
 variable "vpc_id" {
     description = "vpc id"
     type = string
