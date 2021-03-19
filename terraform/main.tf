@@ -33,7 +33,7 @@ resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
   }  
 }
 
-# conf du backend avec le bucket pour les states et la table dynamo pour le lock, en commentaire à la premiere execution
+#conf du backend avec le bucket pour les states et la table dynamo pour le lock, en commentaire à la premiere execution
 terraform {
   backend "s3" {
     bucket = "terraform-remote-state-storage-s3-kubernetes-cluster"
@@ -66,6 +66,9 @@ module "cluster" {
   source = "./modules/cluster"
   control_pane_1_ip = "10.0.1.4"
   control_pane_2_ip="10.0.1.5"
+  worker_1_ip="10.0.1.11"
+  worker_2_ip="10.0.1.12"
+  worker_3_ip="10.0.1.13"
   vpc_id=module.network.vpc_id
   public_subnet_id=module.network.public_subnet_id
   private_subnet_id=module.network.private_subnet_id

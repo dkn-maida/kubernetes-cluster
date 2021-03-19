@@ -15,8 +15,8 @@ locals { timestamp = regex_replace(timestamp(), "[- TZ:]", "") }
 # post-processors on an instance created by the source.
 source "amazon-ebs" "bastion" {
   ami_name      = "bastion-ami"
-  vpc_id= "vpc-0d5efc62d561cfc46"
-  subnet_id= "subnet-0a594ae59c3a9fa43"
+  vpc_id= "vpc-073f9d01e7a1a8b1c"
+  subnet_id= "subnet-0e03dbe5aa8560fff"
   instance_type = "t2.micro"
   region        = "us-east-1"
   source_ami_filter {

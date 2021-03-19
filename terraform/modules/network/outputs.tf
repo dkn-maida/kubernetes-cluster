@@ -10,7 +10,7 @@ output "public_subnet_id" {
 
 output "private_subnet_id" {
     description = "private subnet id"
-    value       = aws_subnet.private.cidr_block
+    value       = aws_subnet.private.id
 }
 
 output "public_subnet_cidr_block" {

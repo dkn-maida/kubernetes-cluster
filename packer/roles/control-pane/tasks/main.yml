@@ -9,6 +9,7 @@
      - yum-utils
      - device-mapper-persistent-data
      - lvm2
+     - tc
    state: latest
 
 
@@ -16,6 +17,17 @@
   yum:
    name: docker
    state: latest
+
+- name: configure docker cgroup to use systemd
+  shell: |
+      echo '{
+      "exec-opts": ["native.cgroupdriver=systemd"],
+      "log-driver": "json-file",
+      "log-opts": {
+        "max-size": "100m"
+      },
+      "storage-driver": "overlay2"
+      }' >> /etc/docker/daemon.json
 
 - name: start and enable docker
   service:
@@ -66,3 +78,5 @@
     echo net.bridge.bridge-nf-call-ip6tables = 1 >> /etc/modules-load.d/k8s.conf
     echo net.bridge.bridge-nf-call-iptables = 1 >> /etc/modules-load.d/k8s.conf
     sudo sysctl --system
+
+
